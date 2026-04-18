@@ -30,9 +30,14 @@
         @keyframes spin{to{transform:rotate(360deg)}}
         .header__name{font-family:var(--font-serif);font-size:clamp(1.5rem,5vw,2.2rem);font-weight:400;letter-spacing:.04em;margin-bottom:8px}
         .header__role{font-size:clamp(10px,2vw,11px);font-weight:300;letter-spacing:.28em;text-transform:uppercase;color:rgba(244,239,230,.45);margin-bottom:22px}
-        .header__badge{display:inline-flex;align-items:center;gap:8px;background:rgba(155,91,110,.15);border:1px solid rgba(155,91,110,.3);color:rgba(244,239,230,.8);font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:6px 16px;border-radius:2px}
+        .header__badge{display:inline-flex;align-items:center;gap:8px;background:rgba(155,91,110,.15);border:1px solid rgba(155,91,110,.3);color:rgba(244,239,230,.8);font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:6px 16px;border-radius:2px;margin-bottom: 20px;}
         .badge-dot{width:5px;height:5px;border-radius:50%;background:var(--rose);animation:pulse 2.2s ease-in-out infinite}
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+        /* LANG SWITCHER */
+        .lang-switcher { display: flex; justify-content: center; gap: 15px; margin-top: 10px; }
+        .lang-btn { background: none; border: none; color: rgba(244,239,230,0.4); font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.1em; transition: color var(--tr); }
+        .lang-btn.active { color: var(--rose); font-weight: bold; }
 
         /* MAIN */
         .main{max-width:640px;margin:0 auto;padding:0 clamp(14px,4vw,20px) 60px}
@@ -119,31 +124,34 @@
             <div style="display:none;width:min(150px,40vw);height:min(150px,40vw);border-radius:50%;background:#2E2B27;align-items:center;justify-content:center;font-size:clamp(32px,8vw,52px)">🦷</div>
             <div class="avatar-ring"></div>
         </div>
-        <h1 class="header__name fade-up">Надежда Кузьмина</h1>
-        <p class="header__role fade-up">Зубной Техник &nbsp;·&nbsp; Караганда</p>
-        <div class="header__badge fade-up"><span class="badge-dot"></span> Принимаю заказы</div>
+        <h1 class="header__name fade-up" data-key="name">Надежда Кузьмина</h1>
+        <p class="header__role fade-up" data-key="role">Зубной Техник &nbsp;·&nbsp; Караганда</p>
+        <div class="header__badge fade-up"><span class="badge-dot"></span> <span data-key="badge">Принимаю заказы</span></div>
+        
+        <div class="lang-switcher fade-up">
+            <button class="lang-btn active" onclick="setLang('ru')">RU</button>
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" onclick="setLang('kz')">KZ</button>
+        </div>
     </header>
 
     <main class="main">
-        <div class="divider fade-up"><div class="divider__line"></div><span class="divider__label">Услуги</span><div class="divider__line divider__line--r"></div></div>
+        <div class="divider fade-up"><div class="divider__line"></div><span class="divider__label" data-key="label_services">Услуги</span><div class="divider__line divider__line--r"></div></div>
         <div class="accordion fade-up" id="acc-services">
-            <button class="accordion__btn" onclick="toggleAcc('acc-services')"><span>Съемное протезирование</span><div class="accordion__icon"></div></button>
+            <button class="accordion__btn" onclick="toggleAcc('acc-services')"><span data-key="service_title">Съёмное протезирование</span><div class="accordion__icon"></div></button>
             <div class="accordion__body">
-                <ul class="services">
-                    <li>Германия</li><li>Нейлон</li><li>Акрил</li><li>Кондулор (Швейцария)</li>
-                    <li>Бюгельный (Кобальт-Хром)</li><li>Бюгельный белый (Acetal)</li>
-                    <li>На имплантах (Ball Attachment)</li><li>Микропротез до 3-х единиц</li>
-                </ul>
+                <ul class="services" id="services-list">
+                    </ul>
             </div>
         </div>
 
-        <div class="divider fade-up"><div class="divider__line"></div><span class="divider__label">Работы</span><div class="divider__line divider__line--r"></div></div>
+        <div class="divider fade-up"><div class="divider__line"></div><span class="divider__label" data-key="label_works">Работы</span><div class="divider__line divider__line--r"></div></div>
         <div class="accordion fade-up" id="acc-gallery">
-            <button class="accordion__btn" onclick="toggleAcc('acc-gallery')"><span>Галерея</span><div class="accordion__icon"></div></button>
+            <button class="accordion__btn" onclick="toggleAcc('acc-gallery')"><span data-key="gallery_title">Галерея</span><div class="accordion__icon"></div></button>
             <div class="accordion__body"><div class="gallery" id="gallery"></div></div>
         </div>
 
-        <div class="divider fade-up"><div class="divider__line"></div><span class="divider__label">Контакты</span><div class="divider__line divider__line--r"></div></div>
+        <div class="divider fade-up"><div class="divider__line"></div><span class="divider__label" data-key="label_contacts">Контакты</span><div class="divider__line divider__line--r"></div></div>
         <address class="contacts fade-up">
             <a href="https://www.instagram.com/naide.kuz/" target="_blank" rel="noopener noreferrer" class="contact-link">
                 <div class="contact-icon contact-icon--ig"><i class="bi bi-instagram"></i></div>
@@ -152,18 +160,25 @@
             </a>
             <a href="https://t.me/+FgswcdiI5O81OGUy" target="_blank" rel="noopener noreferrer" class="contact-link">
                 <div class="contact-icon contact-icon--tg"><i class="bi bi-telegram"></i></div>
-                <div class="contact-text"><div class="contact-title">Telegram</div><div class="contact-sub">Канал с работами</div></div>
+                <div class="contact-text"><div class="contact-title">Telegram</div><div class="contact-sub" data-key="tg_sub">Канал с работами</div></div>
+                <span class="contact-arrow">→</span>
+            </a>
+            <a href="https://wa.me/77072533555" target="_blank" rel="noopener noreferrer" class="contact-link">
+                <div class="contact-icon" style="background:rgba(37,211,102,.1); color:#25D366;"><i class="bi bi-whatsapp"></i></div>
+                <div class="contact-text">
+                <div class="contact-title">WhatsApp</div>
+                <div class="contact-sub" data-key="wa_sub">Написать в чат</div></div>
                 <span class="contact-arrow">→</span>
             </a>
             <a href="tel:+77072533555" class="contact-link">
                 <div class="contact-icon contact-icon--ph"><i class="bi bi-telephone"></i></div>
-                <div class="contact-text"><div class="contact-title">+7 707 253-35-55</div><div class="contact-sub">Позвонить</div></div>
+                <div class="contact-text"><div class="contact-title">+7 707 253-35-55</div><div class="contact-sub" data-key="call_sub">Позвонить</div></div>
                 <span class="contact-arrow">→</span>
             </a>
         </address>
     </main>
 
-    <footer><p>&copy; 2026 Надежда Кузьмина — Зубной Техник</p></footer>
+    <footer><p>&copy; 2026 <span data-key="footer">Надежда Кузьмина — Зубной Техник</span></p></footer>
 
     <div class="modal" id="modal">
         <button class="modal__btn modal__close" onclick="closeModal()"><i class="bi bi-x-lg"></i></button>
@@ -174,6 +189,89 @@
     </div>
 
     <script>
+        const translations = {
+            ru: {
+                name: "Надежда Кузьмина",
+                role: "Зубной Техник · Караганда",
+                badge: "Принимаю заказы",
+                label_services: "Услуги",
+                service_title: "Съёмное протезирование",
+                label_works: "Работы",
+                gallery_title: "Галерея",
+                label_contacts: "Контакты",
+                tg_sub: "Канал с работами",
+                wa_sub: "Написать в чат",
+                call_sub: "Позвонить",
+                footer: "Надежда Кузьмина — Зубной Техник",
+                gallery_btn: "Открыть",
+                services: ["Германия", "Нейлон", "Акрил", "Кондулор (Швейцария)", "Бюгельный (Кобальт-Хром)", "Бюгельный белый (Acetal)", "На имплантах (Ball Attachment)", "Микропротез до 3-х единиц"]
+            },
+            en: {
+                name: "Nadezhda Kuzmina",
+                role: "Dental Technician · Karaganda",
+                badge: "Accepting orders",
+                label_services: "Services",
+                service_title: "Removable Prosthetics",
+                label_works: "Portfolio",
+                gallery_title: "Gallery",
+                label_contacts: "Contacts",
+                wa_sub: "Write a message",
+                tg_sub: "Portfolio channel",
+                call_sub: "Call now",
+                footer: "Nadezhda Kuzmina — Dental Technician",
+                gallery_btn: "Open",
+                services: ["Germany materials", "Nylon", "Acrylic", "Condulor (Switzerland)", "Clasp (Cobalt-Chrome)", "White Clasp (Acetal)", "Implant-supported (Ball Attachment)", "Micro-prosthesis up to 3 units"]
+            },
+            kz: {
+                name: "Надежда Кузьмина",
+                role: "Тіс технигі · Қарағанды",
+                badge: "Тапсырыс қабылдаймын",
+                label_services: "Қызметтер",
+                service_title: "Алмалы-салмалы протездеу",
+                label_works: "Жұмыстар",
+                gallery_title: "Галерея",
+                label_contacts: "Байланыс",
+                tg_sub: "Жұмыс арнасы",
+                wa_sub: "Чатқа жазу",
+                call_sub: "Қоңырау шалу",
+                footer: "Надежда Кузьмина — Тіс технигі",
+                gallery_btn: "Ашу",
+                services: ["Германия", "Нейлон", "Акрил", "Кондулор (Швейцария)", "Бюгельді (Кобальт-Хром)", "Ақ бюгельді (Acetal)", "Импланттағы (Ball Attachment)", "3 бірлікке дейінгі микропротез"]
+            }
+        };
+
+        function setLang(lang) {
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+            });
+
+            // Update text elements
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            // Update services list
+            const sList = document.getElementById('services-list');
+            sList.innerHTML = '';
+            translations[lang].services.forEach(s => {
+                const li = document.createElement('li');
+                li.textContent = s;
+                sList.appendChild(li);
+            });
+
+            // Update gallery overlays
+            document.querySelectorAll('.gallery__overlay').forEach(ov => {
+                ov.textContent = translations[lang].gallery_btn;
+            });
+        }
+
+        // Initialize with RU
+        setLang('ru');
+
         const IMGS = Array.from({length:8},(_,i)=>`products/${i+1}.jpg`);
         let idx=0;
         const modal=document.getElementById('modal'),mImg=document.getElementById('modalImg'),ctr=document.getElementById('modalCounter');
