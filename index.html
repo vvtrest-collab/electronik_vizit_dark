@@ -145,12 +145,6 @@
             </div>
         </div>
 
-        <div class="divider fade-up"><div class="divider__line"></div><span class="divider__label" data-key="label_works">Работы</span><div class="divider__line divider__line--r"></div></div>
-        <div class="accordion fade-up" id="acc-gallery">
-            <button class="accordion__btn" onclick="toggleAcc('acc-gallery')"><span data-key="gallery_title">Галерея</span><div class="accordion__icon"></div></button>
-            <div class="accordion__body"><div class="gallery" id="gallery"></div></div>
-        </div>
-
         <div class="divider fade-up"><div class="divider__line"></div><span class="divider__label" data-key="label_contacts">Контакты</span><div class="divider__line divider__line--r"></div></div>
         <address class="contacts fade-up">
             <a href="https://www.instagram.com/naide.kuz/" target="_blank" rel="noopener noreferrer" class="contact-link">
@@ -196,14 +190,11 @@
                 badge: "Принимаю заказы",
                 label_services: "Услуги",
                 service_title: "Съёмное протезирование",
-                label_works: "Работы",
-                gallery_title: "Галерея",
                 label_contacts: "Контакты",
                 tg_sub: "Канал с работами",
                 wa_sub: "Написать в чат",
                 call_sub: "Позвонить",
                 footer: "Надежда Кузьмина — Зубной Техник",
-                gallery_btn: "Открыть",
                 services: ["Германия", "Нейлон", "Акрил", "Кондулор (Швейцария)", "Бюгельный (Кобальт-Хром)", "Бюгельный белый (Acetal)", "На имплантах (Ball Attachment)", "Микропротез до 3-х единиц"]
             },
             en: {
@@ -212,14 +203,11 @@
                 badge: "Accepting orders",
                 label_services: "Services",
                 service_title: "Removable Prosthetics",
-                label_works: "Portfolio",
-                gallery_title: "Gallery",
                 label_contacts: "Contacts",
                 wa_sub: "Write a message",
                 tg_sub: "Portfolio channel",
                 call_sub: "Call now",
                 footer: "Nadezhda Kuzmina — Dental Technician",
-                gallery_btn: "Open",
                 services: ["Germany materials", "Nylon", "Acrylic", "Condulor (Switzerland)", "Clasp (Cobalt-Chrome)", "White Clasp (Acetal)", "Implant-supported (Ball Attachment)", "Micro-prosthesis up to 3 units"]
             },
             kz: {
@@ -228,14 +216,11 @@
                 badge: "Тапсырыс қабылдаймын",
                 label_services: "Қызметтер",
                 service_title: "Алмалы-салмалы протездеу",
-                label_works: "Жұмыстар",
-                gallery_title: "Галерея",
                 label_contacts: "Байланыс",
                 tg_sub: "Жұмыс арнасы",
                 wa_sub: "Чатқа жазу",
                 call_sub: "Қоңырау шалу",
                 footer: "Надежда Кузьмина — Тіс технигі",
-                gallery_btn: "Ашу",
                 services: ["Германия", "Нейлон", "Акрил", "Кондулор (Швейцария)", "Бюгельді (Кобальт-Хром)", "Ақ бюгельді (Acetal)", "Импланттағы (Ball Attachment)", "3 бірлікке дейінгі микропротез"]
             }
         };
@@ -254,18 +239,16 @@
                 }
             });
 
-            // Update services list
+            // Update services list — each item opens its image
             const sList = document.getElementById('services-list');
             sList.innerHTML = '';
-            translations[lang].services.forEach(s => {
+            translations[lang].services.forEach((s, i) => {
                 const li = document.createElement('li');
                 li.textContent = s;
+                li.style.cursor = 'pointer';
+                li.title = 'Нажмите, чтобы посмотреть фото';
+                li.addEventListener('click', () => openModal(i));
                 sList.appendChild(li);
-            });
-
-            // Update gallery overlays
-            document.querySelectorAll('.gallery__overlay').forEach(ov => {
-                ov.textContent = translations[lang].gallery_btn;
             });
         }
 
@@ -275,17 +258,6 @@
         const IMGS = Array.from({length:8},(_,i)=>`products/${i+1}.jpg`);
         let idx=0;
         const modal=document.getElementById('modal'),mImg=document.getElementById('modalImg'),ctr=document.getElementById('modalCounter');
-        const gal=document.getElementById('gallery');
-
-        IMGS.forEach((src,i)=>{
-            const cell=document.createElement('div'); cell.className='gallery__cell';
-            const img=document.createElement('img'); img.className='gallery__img'; img.src=src; img.alt=`Работа ${i+1}`; img.loading='lazy';
-            img.onerror=()=>{ img.style.display='none'; ph.style.display='flex'; };
-            const ph=document.createElement('div'); ph.className='gallery__img'; ph.style.cssText='display:none;background:#EDE8DF;align-items:center;justify-content:center;font-family:serif;font-size:18px;font-style:italic;color:#A89E8E'; ph.textContent=i+1;
-            const ov=document.createElement('div'); ov.className='gallery__overlay'; ov.textContent='Открыть';
-            cell.appendChild(img); cell.appendChild(ph); cell.appendChild(ov);
-            cell.addEventListener('click',()=>openModal(i)); gal.appendChild(cell);
-        });
 
         function toggleAcc(id){ document.getElementById(id).classList.toggle('open'); }
         function openModal(i){ idx=i; update(); modal.classList.add('show'); document.body.style.overflow='hidden'; }
